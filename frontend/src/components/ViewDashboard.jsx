@@ -1,18 +1,35 @@
-// src/Charts.jsx
-const ViewDashboard = ({dashboardId}) => {
-  console.log("Dashboard ID : ", dashboardId)
+import { Bar, Pie, Line, Radar, Doughnut, Scatter, Bubble } from 'react-chartjs-2';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend, ArcElement, PointElement, LineElement, RadialLinearScale, BubbleController } from 'chart.js';
+import chartDataArray from '../constants/mockChartData';
 
-  const charts = [
-    { id: 1, title: 'Chart 1' },
-    { id: 2, title: 'Chart 2' },
-    { id: 3, title: 'Chart 3' },
-    { id: 4, title: 'Chart 4' },
-    { id: 5, title: 'Chart 5' },
-    { id: 6, title: 'Chart 6' },
-  ];
+ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend, ArcElement, PointElement, LineElement, RadialLinearScale, BubbleController);
+
+const renderChart = (chart) => {
+  const { chartType, data } = chart;
+
+  switch (chartType) {
+    case 'bar':
+      return <Bar data={data} options={{ responsive: true }} />;
+    case 'pie':
+      return <Pie data={data} options={{ responsive: true }} />;
+    case 'line':
+      return <Line data={data} options={{ responsive: true }} />;
+    case 'radar':
+      return <Radar data={data} options={{ responsive: true }} />;
+    case 'doughnut':
+      return <Doughnut data={data} options={{ responsive: true }} />;
+    case 'scatter':
+      return <Scatter data={data} options={{ responsive: true }} />;
+    case 'bubble':
+      return <Bubble data={data} options={{ responsive: true }} />;
+    default:
+      return null;
+  }
+};
+
+const ViewDashboard = () => {
 
   const handleCreateChart = () => {
-    // Add your create chart logic here
     console.log('Create a new chart');
   };
 
@@ -25,16 +42,10 @@ const ViewDashboard = ({dashboardId}) => {
         Create New Chart
       </button>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {charts.map((chart) => (
-          <div
-            key={chart.id}
-            className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition"
-          >
-            <h2 className="text-lg font-semibold">{chart.title}</h2>
-            <div className="h-32 bg-gray-300 flex items-center justify-center rounded">
-              {/* Placeholder for a chart */}
-              <span className="text-gray-600">Chart Placeholder</span>
-            </div>
+        {chartDataArray.map((chart, index) => (
+          <div className="bg-white shadow-md rounded-lg p-4" key={index}>
+            <h2 className="text-lg font-semibold mb-2">{chart.chartType.charAt(0).toUpperCase() + chart.chartType.slice(1)} Chart</h2>
+            {renderChart(chart)}
           </div>
         ))}
       </div>
