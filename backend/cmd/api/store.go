@@ -30,7 +30,7 @@ func CreateUser(ctx context.Context, tx *sql.Tx, user *schemas.SignupRequest) (i
 	query := `
 	Insert into users  (username, password, email, name) VALUES 
     ($1, $2, $3, $4)
-    RETURNING id;
+    RETURNING user_id;
 	`
 
 	ctx, cancel := context.WithTimeout(ctx, queryTimeoutDuration)
@@ -52,7 +52,7 @@ func CreateUser(ctx context.Context, tx *sql.Tx, user *schemas.SignupRequest) (i
 
 func GetUserByCreds(ctx context.Context, db *sql.DB, username, hashedPassword string) (*schemas.UserDetails, error) {
 	query := `
-	Select id, email, name from users
+	Select user_id, email, name from users
 	where username=$1 and password=$2;
 	`
 
@@ -92,11 +92,15 @@ func GetAllDashboards(
 	}
 
 	dashboards := []schemas.DashboardInfo{}
+	var chartCount *int
 
 	for rows.Next() {
 		dashboard := schemas.DashboardInfo{}
 
-		err = rows.Scan(&dashboard.ID, &dashboard.Name, &dashboard.ChartsCount)
+		err = rows.Scan(&dashboard.ID, &dashboard.Name, &chartCount)
+		if chartCount != nil {
+			dashboard.ChartsCount = *chartCount
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -211,7 +215,7 @@ func CreateChart(ctx context.Context, db *sql.DB, dashboardID, userID int, chart
 
 	queryTwo := `
 	Insert into charts (dashboard_id,chart_type,chart_data)
-	Values ($1,$2,$3) returning id
+	Values ($1,$2,$3) returning chart_id
 	`
 
 	chartID := 0

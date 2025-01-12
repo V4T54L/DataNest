@@ -1,7 +1,8 @@
 // src/Auth.jsx
 import { useState } from "react";
+import { baseURL } from "../constants/apiConstants";
 
-const Auth = () => {
+const Auth = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -17,19 +18,24 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
+    const endpoint = baseURL + (isLogin ? "/auth/login" : "/auth/signup");
+    console.log("Endpoint : ", endpoint)
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(formData),
     });
 
     const data = await response.json();
-    
+
     if (response.ok) {
       console.log("Success:", data);
+      if (isLogin) {
+        setUser(data.data)
+      }
     } else {
       console.error("Error:", data);
     }

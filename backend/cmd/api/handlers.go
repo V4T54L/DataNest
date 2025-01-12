@@ -87,7 +87,7 @@ func (a *application) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *application) getDashboardsHandler(w http.ResponseWriter, r *http.Request) {
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return
@@ -104,7 +104,7 @@ func (a *application) getDashboardsHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func (a *application) createDashboardHandler(w http.ResponseWriter, r *http.Request) {
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return
@@ -134,7 +134,7 @@ func (a *application) updateDashboardByID(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return
@@ -157,7 +157,7 @@ func (a *application) updateDashboardByID(w http.ResponseWriter, r *http.Request
 }
 
 func (a *application) getDashboardByIDHandler(w http.ResponseWriter, r *http.Request) {
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return
@@ -170,7 +170,8 @@ func (a *application) getDashboardByIDHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	dashboardDetails, err := GetDashboardDetailsByID(r.Context(), a.db, dashboardID, user.ID)
+	var dashboardDetails *schemas.DashboardDetail
+	dashboardDetails, err = GetDashboardDetailsByID(r.Context(), a.db, dashboardID, user.ID)
 	if err != nil {
 		utils.ErrorResponse(w, http.StatusInternalServerError, err.Error())
 		return
@@ -187,7 +188,7 @@ func (a *application) addChartHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return
@@ -217,7 +218,7 @@ func (a *application) updateChartHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	user, ok := r.Context().Value("userID").(schemas.UserDetails)
+	user, ok := r.Context().Value("user").(schemas.UserDetails)
 	if !ok {
 		utils.ErrorResponse(w, http.StatusInternalServerError, "TODO : Handle this; Add auth middleware")
 		return

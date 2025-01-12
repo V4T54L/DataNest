@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Management API</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <button id="login-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showLogin()">Login</button>
+        <button id="signup-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showSignup()">Sign up</button>
+        <div id="login-form" class="hidden">
+            <form id="login-form" onsubmit="return login(event)">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
+            </form>
+        </div>
+        <div id="signup-form" class="hidden">
+            <form id="signup-form" onsubmit="return signup(event)">
+                <label for="username">Username:</label>
+                <input type="text" id="signup-username" name="username" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <label for="email">Email:</label>
+                <input type="email" id="signup-email" name="email" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <label for="name">Name:</label>
+                <input type="text" id="signup-name" name="name" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <label for="password">Password:</label>
+                <input type="password" id="signup-password" name="password" class="block mt-1 w-2/3 border-gray-300 rounded-md shadow-sm">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign up</button>
+            </form>
+        </div>
+
+        <button id="dashboard-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showDashboard()">Dashboards</button>
+        <div id="dashboard-form" class="hidden">
+            <button id="create-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="createDashboard()">Create new dashboard</button>
+            <div id="dashboards-list">
+                <h2 id="dashboards-header">Dashboards</h2>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>

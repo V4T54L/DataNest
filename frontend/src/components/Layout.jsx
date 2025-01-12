@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-const Layout = ({ children }) => {
+const Layout = () => {
     const handleLogout = () => {
         // Add your logout logic here (e.g., clearing tokens, redirecting to login page)
         console.log("Logged out");
@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
             </header>
 
             {/* Main Section */}
-            <main className="flex-1 p-4">
+            <main className="flex-1 p-4 overflow-auto">
                 <Outlet />
             </main>
 
