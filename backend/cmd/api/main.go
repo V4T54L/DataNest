@@ -52,7 +52,7 @@ func main() {
 	app := NewApplication(db)
 
 	server := http.Server{
-		Addr:         config.ServerAddr,
+		Addr:         fmt.Sprintf(":%s", config.ServerPort),
 		Handler:      app.RegisterRoutes(),
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 20,

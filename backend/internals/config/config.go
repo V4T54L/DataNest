@@ -1,12 +1,13 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 )
 
 type Config struct {
-	ServerAddr     string
+	ServerPort     string
 	DBURI          string
 	DBMaxOpenConns int
 	DBMaxIdleConns int
@@ -36,9 +37,13 @@ func getInt(key string, fallback int) int {
 }
 
 func GetConfig() *Config {
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		getStr("DB_USER", "postgres"), getStr("DB_PASSWORD", "8080"), getStr("DB_HOST", "localhost"), getStr("DB_PORT", "5432"), getStr("DB_DATABASE_NAME", "db"),
+	)
+
 	config := Config{
-		ServerAddr:     getStr("SERVER_ADDR", ":8080"),
-		DBURI:          getStr("DB_URI", "postgres://user:[email protected]:port/dbname?sslmode=disable"),
+		ServerPort:     getStr("SERVER_PORT", ":8080"),
+		DBURI:          connStr,
 		DBMaxOpenConns: getInt("DBMaxOpenConns", 30),
 		DBMaxIdleConns: getInt("DBMaxIdleConns", 30),
 		DBMaxIdleTime:  getStr("DBMaxIdleTime", "15m"),
