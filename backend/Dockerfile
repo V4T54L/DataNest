@@ -1,10 +1,9 @@
-# backend/Dockerfile
-FROM golang:1.24 AS builder
+FROM golang:latest AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
-# Copy go.mod and go.sum files first for caching dependencies
+# Copy go.mod and go.sum files for caching dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
@@ -12,10 +11,9 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build -o main .\...
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/api/*.go
 
-# Start a new stage from scratch
-FROM gcr.io/distroless/base
+FROM scratch AS prod
 
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .

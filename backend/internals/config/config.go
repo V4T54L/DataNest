@@ -42,7 +42,7 @@ func GetConfig() *Config {
 	)
 
 	config := Config{
-		ServerPort:     getStr("SERVER_PORT", ":8080"),
+		ServerPort:     getStr("SERVER_PORT", "8080"),
 		DBURI:          connStr,
 		DBMaxOpenConns: getInt("DBMaxOpenConns", 30),
 		DBMaxIdleConns: getInt("DBMaxIdleConns", 30),

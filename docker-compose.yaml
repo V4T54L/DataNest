@@ -1,5 +1,5 @@
 services:
-  app:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -8,9 +8,8 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     environment:
-      APP_ENV: ${APP_ENV}
       PORT: ${SERVER_PORT}
-      DB_HOST: ${DB_HOST}
+      DB_HOST: database
       DB_PORT: ${DB_PORT}
       DB_DATABASE_NAME: ${DB_DATABASE_NAME}
       DB_USER: ${DB_USER}
@@ -22,12 +21,12 @@ services:
       - dashnest_net
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
       target: frontend
     restart: unless-stopped
     depends_on:
-      - app
+      - backend
     ports:
       - 5173:5173
     networks:
@@ -42,8 +41,8 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-      - dashnest_vol
-      - ./backend/cmd/migrate/migrations:/docker-entrypoint-initdb.d
+      - ./local_db_data:/var/lib/postgresql/data  # Database data in local directory
+      - ./backend/cmd/migrate/migrations:/docker-entrypoint-initdb.d  # Migrations
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_DATABASE_NAME}'"]
       interval: 5s
@@ -53,7 +52,5 @@ services:
     networks:
       - dashnest_net
 
-volumes:
-  dashnest_vol:
 networks:
   dashnest_net:

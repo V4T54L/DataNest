@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
@@ -32,10 +32,10 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %s", err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file: %s", err)
+	// }
 
 	config := config.GetConfig()
 
